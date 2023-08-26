@@ -1,8 +1,6 @@
 package com.sparta.myblogserver.domain.base;
 
-import java.time.LocalDateTime;
 import java.util.Date;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,7 +8,7 @@ import lombok.Setter;
 @Setter
 //@MappedSuperclass
 //@EntityListeners(AuditingEntityListener.class)
-public class BaseEntity {
+public class JDBCBaseEntity {
 
 //    @CreatedDate
     private Date createdAt;

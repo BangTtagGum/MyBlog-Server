@@ -1,12 +1,12 @@
 package com.sparta.myblogserver.domain.post.entity;
 
-import com.sparta.myblogserver.domain.base.BaseEntity;
+import com.sparta.myblogserver.domain.base.JDBCBaseEntity;
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
 @Builder
-public class Post extends BaseEntity {
+public class Post extends JDBCBaseEntity {
 
     Long id;
     String title;
