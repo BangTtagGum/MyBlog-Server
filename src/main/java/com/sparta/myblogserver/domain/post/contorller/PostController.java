@@ -1,8 +1,8 @@
-package com.sparta.myblogserver.controller.post;
+package com.sparta.myblogserver.domain.post.contorller;
 
-import com.sparta.myblogserver.entity.domain.dto.post.PostReq;
-import com.sparta.myblogserver.entity.domain.dto.post.PostRes;
-import com.sparta.myblogserver.service.post.PostService;
+import com.sparta.myblogserver.domain.post.dto.PostReq;
+import com.sparta.myblogserver.domain.post.dto.PostRes;
+import com.sparta.myblogserver.domain.post.service.PostService;
 import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;

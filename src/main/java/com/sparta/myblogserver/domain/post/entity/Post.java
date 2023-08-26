@@ -1,6 +1,6 @@
-package com.sparta.myblogserver.entity.domain.entity;
+package com.sparta.myblogserver.domain.post.entity;
 
-import com.sparta.myblogserver.entity.common.BaseEntity;
+import com.sparta.myblogserver.domain.base.BaseEntity;
 import lombok.Builder;
 import lombok.Getter;
 

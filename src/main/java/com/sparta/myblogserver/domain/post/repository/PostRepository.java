@@ -1,8 +1,8 @@
-package com.sparta.myblogserver.repository.post;
+package com.sparta.myblogserver.domain.post.repository;
 
-import com.sparta.myblogserver.entity.domain.dto.post.PostReq;
-import com.sparta.myblogserver.entity.domain.dto.post.PostRes;
-import com.sparta.myblogserver.entity.domain.entity.Post;
+import com.sparta.myblogserver.domain.post.dto.PostReq;
+import com.sparta.myblogserver.domain.post.dto.PostRes;
+import com.sparta.myblogserver.domain.post.entity.Post;
 import java.util.List;
 
 public interface PostRepository {

@@ -1,7 +1,7 @@
-package com.sparta.myblogserver.service.post;
+package com.sparta.myblogserver.domain.post.service;
 
-import com.sparta.myblogserver.entity.domain.dto.post.PostReq;
-import com.sparta.myblogserver.entity.domain.dto.post.PostRes;
+import com.sparta.myblogserver.domain.post.dto.PostReq;
+import com.sparta.myblogserver.domain.post.dto.PostRes;
 import java.util.List;
 
 public interface PostService {

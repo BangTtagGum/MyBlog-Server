@@ -1,10 +1,9 @@
-package com.sparta.myblogserver.service.post;
+package com.sparta.myblogserver.domain.post.service;
 
-import com.sparta.myblogserver.entity.domain.dto.post.PostReq;
-import com.sparta.myblogserver.entity.domain.dto.post.PostRes;
-import com.sparta.myblogserver.entity.domain.entity.Post;
-import com.sparta.myblogserver.repository.post.PostRepository;
-import java.time.LocalDate;
+import com.sparta.myblogserver.domain.post.dto.PostReq;
+import com.sparta.myblogserver.domain.post.dto.PostRes;
+import com.sparta.myblogserver.domain.post.entity.Post;
+import com.sparta.myblogserver.domain.post.repository.PostRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

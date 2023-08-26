@@ -1,4 +1,4 @@
-package com.sparta.myblogserver.entity.domain.dto.post;
+package com.sparta.myblogserver.domain.post.dto;
 
 import java.time.LocalDate;
 import java.util.Date;

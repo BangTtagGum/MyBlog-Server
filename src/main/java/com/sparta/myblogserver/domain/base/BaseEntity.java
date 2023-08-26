@@ -1,4 +1,4 @@
-package com.sparta.myblogserver.entity.common;
+package com.sparta.myblogserver.domain.base;
 
 import java.time.LocalDateTime;
 import java.util.Date;
