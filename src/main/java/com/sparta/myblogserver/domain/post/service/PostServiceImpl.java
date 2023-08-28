@@ -7,78 +7,70 @@ import com.sparta.myblogserver.domain.post.repository.PostRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class PostServiceImpl implements PostService{
+@Transactional(readOnly = true)
+public class PostServiceImpl implements PostService {
 
     private final PostRepository postRepository;
 
     @Override
-    public Long createPost(PostReq postReq) {
-        // RequestDto -> Entity
-        Post post = Post.builder()
-                .title(postReq.getTitle())
-                .content(postReq.getContent())
-                .author(postReq.getAuthor())
-                .password(postReq.getPassword())
-                .build();
-
+    @Transactional
+    public PostRes createPost(PostReq postReq) {
         // DB 저장
-        Long savedPostId = postRepository.save(post);
-
-        return savedPostId;
+        Post post = postReq.toEntity();
+        Post savedpost = postRepository.save(post);
+        return savedpost.toRes();
     }
 
     @Override
     public List<PostRes> findAllPosts() {
-        return postRepository.findAll();
+        return postRepository.findAllByOrderByCreatedAtDesc().stream().map(PostRes::new).toList();
     }
 
     @Override
     public PostRes findPostById(Long id) {
-        Post findPost = postRepository.findById(id);
-        if (findPost != null) {
-            return PostRes.builder()
-                    .id(findPost.getId())
-                    .title(findPost.getTitle())
-                    .content(findPost.getContent())
-                    .author(findPost.getAuthor())
-                    .createdAt(findPost.getCreatedAt())
-                    .modifiedAt(findPost.getModifiedAt())
-                    .build();
-        } else {
-
-            throw new IllegalArgumentException("해당 게시글은 존재하지 않습니다.");
-        }
-    }
-
-    @Override
-    public Long updatePost(Long id, PostReq postReq) {
-        Post findPost = postRepository.findById(id);
-        if (findPost != null) {
-            if (postReq.getPassword().equals(findPost.getPassword())) {
-                return postRepository.update(id, postReq);
-            } else {
-                throw new IllegalArgumentException("게시글 비밀번호가 일치하지 않습니다.");
-            }
-        } else {
-            throw new IllegalArgumentException("해당 게시글은 존재하지 않습니다.");
-        }
+        Post findPost = findPost(id);
+        return findPost.toRes();
 
     }
 
     @Override
-    public Long deletePost(Long id,String password) {
-        Post findPost = postRepository.findById(id);
-        if (findPost != null) {
-            if (password.equals(findPost.getPassword())) {
-                return postRepository.delete(id);
-            } else {
-                throw new IllegalArgumentException("게시글 비밀번호가 일치하지 않습니다.");
-            }
+    @Transactional
+    public PostRes updatePost(Long id, PostReq postReq) {
+        Post findPost = findPost(id);
+        if (passwordValidationCheck(findPost.getPassword(), postReq.getPassword())) {
+            findPost.update(postReq);
+            return findPost.toRes();
         } else {
-            throw new IllegalArgumentException("해당 게시글은 존재하지 않습니다.");
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
+    }
+
+    @Override
+    @Transactional
+    public Long deletePost(Long id, String password) {
+        Post findPost = findPost(id);
+        if (passwordValidationCheck(findPost.getPassword(), password)) {
+            postRepository.delete(findPost);
+            return id;
+        } else {
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+        }
+    }
+
+    private Post findPost(Long id) {
+        return postRepository.findById(id).orElseThrow(() -> {
+            throw new IllegalArgumentException("게시물이 존재하지 않습니다.");
+        });
+    }
+
+    private Boolean passwordValidationCheck(String expect, String actual) {
+        if (expect.equals(actual)) {
+            return true;
+        }
+        return false;
     }
 }
