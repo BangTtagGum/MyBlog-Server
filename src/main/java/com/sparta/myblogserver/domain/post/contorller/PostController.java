@@ -1,8 +1,10 @@
 package com.sparta.myblogserver.domain.post.contorller;
 
+
 import com.sparta.myblogserver.domain.post.dto.PostReq;
 import com.sparta.myblogserver.domain.post.dto.PostRes;
 import com.sparta.myblogserver.domain.post.service.PostService;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
@@ -33,17 +35,22 @@ public class PostController {
     }
 
     @PostMapping
-    public Long createPost(@RequestBody PostReq postReq) {
-        return postService.createPost(postReq);
+    public PostRes createPost(@RequestBody PostReq postReq) {
+            return postService.createPost(postReq);
     }
 
     @PutMapping("/{id}")
-    public Long updatePost(@PathVariable Long id, @RequestBody PostReq postReq) {
-        return postService.updatePost(id, postReq);
+    public PostRes updatePost(@PathVariable Long id,
+            @RequestBody PostReq postReq) {
+            return postService.updatePost(id, postReq);
     }
 
     @DeleteMapping("/{id}")
-    public Long deletePost(@PathVariable Long id, @RequestBody Map<String, String> password) {
-        return postService.deletePost(id, password.get("password"));
+    public Map<String, Boolean> deletePost(@PathVariable Long id,
+            @RequestBody Map<String, String> password) {
+            postService.deletePost(id, password.get("password"));
+        Map<String, Boolean> response = new HashMap<>();
+        response.put("success", true);
+        return response;
     }
 }
