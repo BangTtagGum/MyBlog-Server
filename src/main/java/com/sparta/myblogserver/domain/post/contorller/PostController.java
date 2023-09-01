@@ -3,7 +3,7 @@ package com.sparta.myblogserver.domain.post.contorller;
 
 import com.sparta.myblogserver.domain.post.dto.PostReq;
 import com.sparta.myblogserver.domain.post.dto.PostRes;
-import com.sparta.myblogserver.domain.post.service.PostService;
+import com.sparta.myblogserver.domain.post.service.PostServiceImpl;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,33 +22,33 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/posts")
 public class PostController {
 
-    private final PostService postService;
+    private final PostServiceImpl postServiceImpl;
 
     @GetMapping
     public List<PostRes> findAllPosts() {
-        return postService.findAllPosts();
+        return postServiceImpl.findAllPosts();
     }
 
     @GetMapping("/{id}")
     public PostRes findPostById(@PathVariable Long id) {
-        return postService.findPostById(id);
+        return postServiceImpl.findPostById(id);
     }
 
     @PostMapping
     public PostRes createPost(@RequestBody PostReq postReq) {
-            return postService.createPost(postReq);
+            return postServiceImpl.createPost(postReq);
     }
 
     @PutMapping("/{id}")
     public PostRes updatePost(@PathVariable Long id,
             @RequestBody PostReq postReq) {
-            return postService.updatePost(id, postReq);
+            return postServiceImpl.updatePost(id, postReq);
     }
 
     @DeleteMapping("/{id}")
     public Map<String, Boolean> deletePost(@PathVariable Long id,
             @RequestBody Map<String, String> password) {
-            postService.deletePost(id, password.get("password"));
+            postServiceImpl.deletePost(id, password.get("password"));
         Map<String, Boolean> response = new HashMap<>();
         response.put("success", true);
         return response;

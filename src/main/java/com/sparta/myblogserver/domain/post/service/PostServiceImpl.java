@@ -12,11 +12,10 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class PostServiceImpl implements PostService {
+public class PostServiceImpl {
 
     private final PostRepository postRepository;
 
-    @Override
     @Transactional
     public PostRes createPost(PostReq postReq) {
         // DB 저장
@@ -25,19 +24,16 @@ public class PostServiceImpl implements PostService {
         return savedpost.toRes();
     }
 
-    @Override
     public List<PostRes> findAllPosts() {
         return postRepository.findAllByOrderByCreatedAtDesc().stream().map(PostRes::new).toList();
     }
 
-    @Override
     public PostRes findPostById(Long id) {
         Post findPost = findPost(id);
         return findPost.toRes();
 
     }
 
-    @Override
     @Transactional
     public PostRes updatePost(Long id, PostReq postReq) {
         Post findPost = findPost(id);
@@ -49,7 +45,6 @@ public class PostServiceImpl implements PostService {
         }
     }
 
-    @Override
     @Transactional
     public Long deletePost(Long id, String password) {
         Post findPost = findPost(id);
