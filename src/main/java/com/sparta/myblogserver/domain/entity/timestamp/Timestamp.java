@@ -1,4 +1,4 @@
-package com.sparta.myblogserver.domain.timestamp;
+package com.sparta.myblogserver.domain.entity.timestamp;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
