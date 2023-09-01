@@ -1,8 +1,8 @@
-package com.sparta.myblogserver.domain.entity.post;
+package com.sparta.myblogserver.entity.post;
 
-import com.sparta.myblogserver.domain.entity.timestamp.Timestamp;
-import com.sparta.myblogserver.domain.dto.post.PostRequestDto;
-import com.sparta.myblogserver.domain.dto.post.PostResponseDto;
+import com.sparta.myblogserver.entity.timestamp.Timestamp;
+import com.sparta.myblogserver.dto.post.PostRequestDto;
+import com.sparta.myblogserver.dto.post.PostResponseDto;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;

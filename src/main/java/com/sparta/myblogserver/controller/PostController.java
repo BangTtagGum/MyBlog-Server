@@ -1,9 +1,9 @@
-package com.sparta.myblogserver.domain.controller;
+package com.sparta.myblogserver.controller;
 
 
-import com.sparta.myblogserver.domain.dto.post.PostRequestDto;
-import com.sparta.myblogserver.domain.dto.post.PostResponseDto;
-import com.sparta.myblogserver.domain.service.PostServiceImpl;
+import com.sparta.myblogserver.dto.post.PostRequestDto;
+import com.sparta.myblogserver.dto.post.PostResponseDto;
+import com.sparta.myblogserver.service.PostServiceImpl;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

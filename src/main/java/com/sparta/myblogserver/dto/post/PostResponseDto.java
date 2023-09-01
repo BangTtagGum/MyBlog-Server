@@ -1,6 +1,6 @@
-package com.sparta.myblogserver.domain.dto.post;
+package com.sparta.myblogserver.dto.post;
 
-import com.sparta.myblogserver.domain.entity.post.Post;
+import com.sparta.myblogserver.entity.post.Post;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
