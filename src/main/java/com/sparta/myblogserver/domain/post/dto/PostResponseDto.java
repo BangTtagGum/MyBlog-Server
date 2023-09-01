@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class PostRes {
+public class PostResponseDto {
 
     private Long id;
     private String title;
@@ -20,7 +20,7 @@ public class PostRes {
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 
-    public PostRes(Post post) {
+    public PostResponseDto(Post post) {
         this.id = post.getId();
         this.title = post.getTitle();
         this.content = post.getContent();

@@ -1,7 +1,7 @@
 package com.sparta.myblogserver.domain.post.service;
 
-import com.sparta.myblogserver.domain.post.dto.PostReq;
-import com.sparta.myblogserver.domain.post.dto.PostRes;
+import com.sparta.myblogserver.domain.post.dto.PostRequestDto;
+import com.sparta.myblogserver.domain.post.dto.PostResponseDto;
 import com.sparta.myblogserver.domain.post.entity.Post;
 import com.sparta.myblogserver.domain.post.repository.PostRepository;
 import java.util.List;
@@ -17,28 +17,28 @@ public class PostServiceImpl {
     private final PostRepository postRepository;
 
     @Transactional
-    public PostRes createPost(PostReq postReq) {
+    public PostResponseDto createPost(PostRequestDto postRequestDto) {
         // DB 저장
-        Post post = postReq.toEntity();
+        Post post = postRequestDto.toEntity();
         Post savedpost = postRepository.save(post);
         return savedpost.toRes();
     }
 
-    public List<PostRes> findAllPosts() {
-        return postRepository.findAllByOrderByCreatedAtDesc().stream().map(PostRes::new).toList();
+    public List<PostResponseDto> findAllPosts() {
+        return postRepository.findAllByOrderByCreatedAtDesc().stream().map(PostResponseDto::new).toList();
     }
 
-    public PostRes findPostById(Long id) {
+    public PostResponseDto findPostById(Long id) {
         Post findPost = findPost(id);
         return findPost.toRes();
 
     }
 
     @Transactional
-    public PostRes updatePost(Long id, PostReq postReq) {
+    public PostResponseDto updatePost(Long id, PostRequestDto postRequestDto) {
         Post findPost = findPost(id);
-        if (passwordValidationCheck(findPost.getPassword(), postReq.getPassword())) {
-            findPost.update(postReq);
+        if (passwordValidationCheck(findPost.getPassword(), postRequestDto.getPassword())) {
+            findPost.update(postRequestDto);
             return findPost.toRes();
         } else {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");

@@ -4,7 +4,7 @@ import com.sparta.myblogserver.domain.post.entity.Post;
 import lombok.Getter;
 
 @Getter
-public class PostReq {
+public class PostRequestDto {
 
     String title;
     String content;

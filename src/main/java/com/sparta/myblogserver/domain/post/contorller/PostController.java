@@ -1,8 +1,8 @@
 package com.sparta.myblogserver.domain.post.contorller;
 
 
-import com.sparta.myblogserver.domain.post.dto.PostReq;
-import com.sparta.myblogserver.domain.post.dto.PostRes;
+import com.sparta.myblogserver.domain.post.dto.PostRequestDto;
+import com.sparta.myblogserver.domain.post.dto.PostResponseDto;
 import com.sparta.myblogserver.domain.post.service.PostServiceImpl;
 import java.util.HashMap;
 import java.util.List;
@@ -25,24 +25,24 @@ public class PostController {
     private final PostServiceImpl postServiceImpl;
 
     @GetMapping
-    public List<PostRes> findAllPosts() {
+    public List<PostResponseDto> findAllPosts() {
         return postServiceImpl.findAllPosts();
     }
 
     @GetMapping("/{id}")
-    public PostRes findPostById(@PathVariable Long id) {
+    public PostResponseDto findPostById(@PathVariable Long id) {
         return postServiceImpl.findPostById(id);
     }
 
     @PostMapping
-    public PostRes createPost(@RequestBody PostReq postReq) {
-            return postServiceImpl.createPost(postReq);
+    public PostResponseDto createPost(@RequestBody PostRequestDto postRequestDto) {
+            return postServiceImpl.createPost(postRequestDto);
     }
 
     @PutMapping("/{id}")
-    public PostRes updatePost(@PathVariable Long id,
-            @RequestBody PostReq postReq) {
-            return postServiceImpl.updatePost(id, postReq);
+    public PostResponseDto updatePost(@PathVariable Long id,
+            @RequestBody PostRequestDto postRequestDto) {
+            return postServiceImpl.updatePost(id, postRequestDto);
     }
 
     @DeleteMapping("/{id}")
