@@ -24,11 +24,11 @@ public class Post extends Timestamped {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
-    String title;
-    String content;
-    String author;
-    String password;
+    private Long id;
+    private String title;
+    private String content;
+    private String author;
+    private String password;
 
     public void update(PostReq postReq) {
         this.title = postReq.getTitle();
