@@ -1,8 +1,8 @@
 package com.sparta.myblogserver.entity.post;
 
-import com.sparta.myblogserver.entity.timestamp.Timestamp;
 import com.sparta.myblogserver.dto.post.PostRequestDto;
 import com.sparta.myblogserver.dto.post.PostResponseDto;
+import com.sparta.myblogserver.entity.timestamp.Timestamp;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -26,12 +26,10 @@ public class Post extends Timestamp {
     private String title;
     private String content;
     private String author;
-    private String password;
 
     public void update(PostRequestDto postRequestDto) {
         this.title = postRequestDto.getTitle();
         this.content = postRequestDto.getContent();
-        this.author = postRequestDto.getAuthor();
     }
 
     public PostResponseDto toRes() {
