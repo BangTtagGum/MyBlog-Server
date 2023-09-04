@@ -25,7 +25,8 @@ public class PostServiceImpl {
     }
 
     public List<PostResponseDto> findAllPosts() {
-        return postRepository.findAllByOrderByCreatedAtDesc().stream().map(PostResponseDto::new).toList();
+        return postRepository.findAllByOrderByCreatedAtDesc().stream().map(PostResponseDto::new)
+                .toList();
     }
 
     public PostResponseDto findPostById(Long id) {
@@ -35,25 +36,24 @@ public class PostServiceImpl {
     }
 
     @Transactional
-    public PostResponseDto updatePost(Long id, PostRequestDto postRequestDto) {
+    public PostResponseDto updatePost(Long id, PostRequestDto postRequestDto, String username) {
         Post findPost = findPost(id);
-        if (passwordValidationCheck(findPost.getPassword(), postRequestDto.getPassword())) {
-            findPost.update(postRequestDto);
-            return findPost.toRes();
-        } else {
-            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+        if (!findPost.getAuthor().equals(username)) {
+            throw new RuntimeException("작성자만 수정이 가능합니다.");
         }
+        findPost.update(postRequestDto);
+        return findPost.toRes();
     }
 
     @Transactional
-    public Long deletePost(Long id, String password) {
+    public Long deletePost(Long id, String username) throws RuntimeException {
+
         Post findPost = findPost(id);
-        if (passwordValidationCheck(findPost.getPassword(), password)) {
-            postRepository.delete(findPost);
-            return id;
-        } else {
-            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+        if (!findPost.getAuthor().equals(username)) {
+            throw new RuntimeException("작성자만 삭제가 가능합니다.");
         }
+        postRepository.delete(findPost);
+        return id;
     }
 
     private Post findPost(Long id) {
