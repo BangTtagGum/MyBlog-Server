@@ -1,4 +1,4 @@
-package com.sparta.myblogserver.domain.base;
+package com.sparta.myblogserver.entity.timestamp;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
@@ -14,7 +14,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Getter
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
-public abstract class Timestamped {
+public abstract class Timestamp {
 
     @CreatedDate
     @Column(updatable = false)

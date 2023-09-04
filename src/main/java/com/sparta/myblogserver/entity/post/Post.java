@@ -1,13 +1,12 @@
-package com.sparta.myblogserver.domain.post.entity;
+package com.sparta.myblogserver.entity.post;
 
-import com.sparta.myblogserver.domain.base.Timestamped;
-import com.sparta.myblogserver.domain.post.dto.PostReq;
-import com.sparta.myblogserver.domain.post.dto.PostRes;
+import com.sparta.myblogserver.dto.post.PostRequestDto;
+import com.sparta.myblogserver.dto.post.PostResponseDto;
+import com.sparta.myblogserver.entity.timestamp.Timestamp;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,27 +16,24 @@ import lombok.NoArgsConstructor;
 @Builder
 @Entity // JPA가 관리할 수 있는 Entity 클래스 지정
 @Getter
-@Table
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Post extends Timestamped {
+public class Post extends Timestamp {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
-    String title;
-    String content;
-    String author;
-    String password;
+    private Long id;
+    private String title;
+    private String content;
+    private String author;
 
-    public void update(PostReq postReq) {
-        this.title = postReq.getTitle();
-        this.content = postReq.getContent();
-        this.author = postReq.getAuthor();
+    public void update(PostRequestDto postRequestDto) {
+        this.title = postRequestDto.getTitle();
+        this.content = postRequestDto.getContent();
     }
 
-    public PostRes toRes() {
-        return PostRes.builder()
+    public PostResponseDto toRes() {
+        return PostResponseDto.builder()
                 .id(this.getId())
                 .title(this.getTitle())
                 .content(this.getContent())

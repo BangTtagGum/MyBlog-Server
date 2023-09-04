@@ -1,6 +1,6 @@
-package com.sparta.myblogserver.domain.post.dto;
+package com.sparta.myblogserver.dto.post;
 
-import com.sparta.myblogserver.domain.post.entity.Post;
+import com.sparta.myblogserver.entity.post.Post;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class PostRes {
+public class PostResponseDto {
 
     private Long id;
     private String title;
@@ -20,7 +20,7 @@ public class PostRes {
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 
-    public PostRes(Post post) {
+    public PostResponseDto(Post post) {
         this.id = post.getId();
         this.title = post.getTitle();
         this.content = post.getContent();
