@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class PostServiceImpl {
+public class PostService {
 
     private final PostRepository postRepository;
 
@@ -46,7 +46,7 @@ public class PostServiceImpl {
     }
 
     @Transactional
-    public Long deletePost(Long id, String username) throws RuntimeException {
+    public Long deletePost(Long id, String username) {
 
         Post findPost = findPost(id);
         if (!findPost.getAuthor().equals(username)) {
@@ -60,12 +60,5 @@ public class PostServiceImpl {
         return postRepository.findById(id).orElseThrow(() -> {
             throw new IllegalArgumentException("게시물이 존재하지 않습니다.");
         });
-    }
-
-    private Boolean passwordValidationCheck(String expect, String actual) {
-        if (expect.equals(actual)) {
-            return true;
-        }
-        return false;
     }
 }
