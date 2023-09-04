@@ -32,4 +32,4 @@
 
 ### 🔗 간단한 ERD
 
-<img width="600" alt="#" src="https://github.com/BangTtagGum/MyBlog-Server/assets/99023627/8f26c8b2-6ecc-4f8c-970b-9e629df388b2">
+<img width="600" alt="스크린샷 2023-09-04 오후 2 30 43" src="https://github.com/BangTtagGum/MyBlog-Server/assets/99023627/c8bbc4b6-0b38-48b0-8c32-e0ab73c07be1">
