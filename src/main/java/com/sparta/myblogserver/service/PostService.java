@@ -58,7 +58,7 @@ public class PostService {
 
     private Post findPost(Long id) {
         return postRepository.findById(id).orElseThrow(() -> {
-            throw new IllegalArgumentException("게시물이 존재하지 않습니다.");
+            throw new IllegalArgumentException("해당 id의 게시물이 존재하지 않습니다. Post ID: " + id);
         });
     }
 }
