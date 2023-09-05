@@ -35,13 +35,16 @@ public class PostController {
     private final PostService postService;
 
     @GetMapping
-    public List<PostResponseDto> findAllPosts() {
-        return postService.findAllPosts();
+    public ResponseEntity<Message> findAllPosts() {
+
+        List<PostResponseDto> postResponseDtos = postService.findAllPosts();
+        return ResponseEntity.ok().body(new SuccessMessage("전체 게시물 조회 성공", postResponseDtos));
     }
 
     @GetMapping("/{id}")
-    public PostResponseDto findPostById(@PathVariable Long id) {
-        return postService.findPostById(id);
+    public ResponseEntity<Message> findPostById(@PathVariable Long id) {
+        PostResponseDto postResponseDto = postService.findPostById(id);
+        return ResponseEntity.ok().body(new SuccessMessage("게시물 조회 성공 Post ID: " + id,postResponseDto));
     }
 
     /**
@@ -52,7 +55,7 @@ public class PostController {
      * @return 저장된 게시글 반환
      */
     @PostMapping
-    public PostResponseDto createPost(@RequestBody @Valid PostRequestDto postRequestDto,
+    public ResponseEntity<Message> createPost(@RequestBody @Valid PostRequestDto postRequestDto,
             BindingResult bindingResult,
             @AuthenticationPrincipal
             UserDetailsImpl userDetails) {
@@ -62,7 +65,8 @@ public class PostController {
         }
         // 게시글에 작성자 이름 추가
         postRequestDto.addAuthor(userDetails.getUsername());
-        return postService.createPost(postRequestDto);
+        PostResponseDto postResponseDto = postService.createPost(postRequestDto);
+        return ResponseEntity.ok().body(new SuccessMessage("게시물 생성 성공", postResponseDto));
     }
 
     /**
@@ -72,14 +76,17 @@ public class PostController {
      * @return 수정된 게시글 반환
      */
     @PutMapping("/{id}")
-    public PostResponseDto updatePost(@PathVariable Long id,
+    public ResponseEntity<Message> updatePost(@PathVariable Long id,
             @RequestBody @Valid PostRequestDto postRequestDto, BindingResult bindingResult,
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
         List<FieldError> fieldErrors = bindingResult.getFieldErrors();
         for (FieldError e : fieldErrors) {
             throw new ParameterValidationException(e.getDefaultMessage());
         }
-        return postService.updatePost(id, postRequestDto, userDetails.getUsername());
+
+        PostResponseDto postResponseDto = postService.updatePost(id, postRequestDto,
+                userDetails.getUsername());
+        return ResponseEntity.ok().body(new SuccessMessage("게시물 수정 성공",postResponseDto));
     }
 
     /**
@@ -93,7 +100,7 @@ public class PostController {
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
         Long deletedPostId = postService.deletePost(id, userDetails.getUsername());
         return ResponseEntity.ok()
-                .body(new SuccessMessage("게시물 삭제에 성공하였습니다. Post ID: " + deletedPostId));
+                .body(new SuccessMessage("게시물 삭제 성공 Post ID: " + deletedPostId));
     }
 
 }
