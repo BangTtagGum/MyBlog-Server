@@ -1,5 +1,7 @@
 package com.sparta.myblogserver.jwt;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sparta.myblogserver.controller.message.Message;
 import com.sparta.myblogserver.security.UserDetailsServiceImpl;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
@@ -7,6 +9,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -39,7 +42,13 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
             // 토큰 유효성 검사
             if (!jwtUtil.validateToken(tokenValue)) {
-                log.error("Token Error");
+                res.setStatus(400);
+                res.setContentType("application/json;charset=UTF-8");
+                Message responseMessage = new Message(HttpStatus.BAD_REQUEST, "유효하지 않은 토큰입니다.");
+
+                ObjectMapper objectMapper = new ObjectMapper();
+                PrintWriter out = res.getWriter();
+                objectMapper.writeValue(out, responseMessage);
                 return;
             }
 

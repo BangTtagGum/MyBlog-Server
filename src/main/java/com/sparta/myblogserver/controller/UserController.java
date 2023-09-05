@@ -28,11 +28,6 @@ public class UserController {
 
     private final UserService userService;
 
-    @GetMapping("/login-page")
-    public String loginPage() {
-        return "로그인 페이지 입니다.";
-    }
-
     @PostMapping("/signup")
     public ResponseEntity<Message> signup(@RequestBody @Valid SignupRequestDto requestDto,
             BindingResult bindingResult) {
