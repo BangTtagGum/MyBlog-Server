@@ -12,12 +12,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<FailureMessage> runtimeExHandler(RuntimeException e) {
-        return ResponseEntity.badRequest()
-                .body(new FailureMessage(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage()));
 
-    }
 
     @ExceptionHandler(ParameterValidationException.class)
     public ResponseEntity<FailureMessage> parameterValidationExHandler(
@@ -39,5 +34,18 @@ public class GlobalExceptionHandler {
             UsernameNotFoundException e) {
         return ResponseEntity.badRequest()
                 .body(new FailureMessage(HttpStatus.NOT_FOUND, e.getMessage()));
+    }
+
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<FailureMessage> runtimeExHandler(RuntimeException e) {
+        return ResponseEntity.internalServerError()
+                .body(new FailureMessage(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage()));
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<FailureMessage> exHandler(
+            Exception e) {
+        return ResponseEntity.internalServerError()
+                .body(new FailureMessage(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage()));
     }
 }
