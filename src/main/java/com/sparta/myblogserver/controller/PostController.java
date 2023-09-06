@@ -14,7 +14,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -44,7 +43,8 @@ public class PostController {
     @GetMapping("/{id}")
     public ResponseEntity<Message> findPostById(@PathVariable Long id) {
         PostResponseDto postResponseDto = postService.findPostById(id);
-        return ResponseEntity.ok().body(new SuccessMessage("게시물 조회 성공 Post ID: " + id,postResponseDto));
+        return ResponseEntity.ok()
+                .body(new SuccessMessage("게시물 조회 성공 Post ID: " + id, postResponseDto));
     }
 
     /**
@@ -86,7 +86,7 @@ public class PostController {
 
         PostResponseDto postResponseDto = postService.updatePost(id, postRequestDto,
                 userDetails.getUsername());
-        return ResponseEntity.ok().body(new SuccessMessage("게시물 수정 성공",postResponseDto));
+        return ResponseEntity.ok().body(new SuccessMessage("게시물 수정 성공", postResponseDto));
     }
 
     /**
