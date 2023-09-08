@@ -34,7 +34,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
         try {
 
-            if (!"GET".equals(req.getMethod())) { // GET 요청이 아니라면 토큰 유무 및 유효성 검증
+            if (!"GET".equals(req.getMethod()) && !req.getRequestURI().equals("/api/users/login") && !req.getRequestURI().equals("/api/users/signup")) { // GET 요청이거나 로그인 시도가 아니라면 토큰 유무 및 유효성 검증
 
                 // 토큰 체크
                 String tokenValue = jwtUtil.getTokenFromRequestHeader(req);
