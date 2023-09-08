@@ -1,22 +1,21 @@
-package com.sparta.myblogserver.controller.message;
+package com.sparta.myblogserver.controller.response;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
 @Getter
-public class Message<T> {
+public class BaseResponse<T> {
 
     private HttpStatus httpStatus;
     private String message;
     private T data;
 
-    public Message(HttpStatus httpStatus, String message) {
+    public BaseResponse(HttpStatus httpStatus, String message) {
         this.httpStatus = httpStatus;
         this.message = message;
     }
 
-    public Message(HttpStatus httpStatus, String message, T data) {
+    public BaseResponse(HttpStatus httpStatus, String message, T data) {
         this.httpStatus = httpStatus;
         this.message = message;
         this.data = data;

@@ -1,8 +1,8 @@
 package com.sparta.myblogserver.controller;
 
 
-import com.sparta.myblogserver.controller.message.Message;
-import com.sparta.myblogserver.controller.message.SuccessMessage;
+import com.sparta.myblogserver.controller.response.BaseResponse;
+import com.sparta.myblogserver.controller.response.SuccessResponse;
 import com.sparta.myblogserver.dto.post.PostRequestDto;
 import com.sparta.myblogserver.dto.post.PostResponseDto;
 import com.sparta.myblogserver.error.ParameterValidationException;
@@ -34,17 +34,17 @@ public class PostController {
     private final PostService postService;
 
     @GetMapping
-    public ResponseEntity<Message> findAllPosts() {
+    public ResponseEntity<BaseResponse> findAllPosts() {
 
         List<PostResponseDto> postResponseDtos = postService.findAllPosts();
-        return ResponseEntity.ok().body(new SuccessMessage("전체 게시물 조회 성공", postResponseDtos));
+        return ResponseEntity.ok().body(new SuccessResponse("전체 게시물 조회 성공", postResponseDtos));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Message> findPostById(@PathVariable Long id) {
+    public ResponseEntity<BaseResponse> findPostById(@PathVariable Long id) {
         PostResponseDto postResponseDto = postService.findPostById(id);
         return ResponseEntity.ok()
-                .body(new SuccessMessage("게시물 조회 성공 Post ID: " + id, postResponseDto));
+                .body(new SuccessResponse("게시물 조회 성공 Post ID: " + id, postResponseDto));
     }
 
     /**
@@ -55,7 +55,7 @@ public class PostController {
      * @return 저장된 게시글 반환
      */
     @PostMapping
-    public ResponseEntity<Message> createPost(@RequestBody @Valid PostRequestDto postRequestDto,
+    public ResponseEntity<BaseResponse> createPost(@RequestBody @Valid PostRequestDto postRequestDto,
             BindingResult bindingResult,
             @AuthenticationPrincipal
             UserDetailsImpl userDetails) {
@@ -66,7 +66,7 @@ public class PostController {
         // 게시글에 작성자 이름 추가
         postRequestDto.addAuthor(userDetails.getUsername());
         PostResponseDto postResponseDto = postService.createPost(postRequestDto);
-        return ResponseEntity.ok().body(new SuccessMessage("게시물 생성 성공", postResponseDto));
+        return ResponseEntity.ok().body(new SuccessResponse("게시물 생성 성공", postResponseDto));
     }
 
     /**
@@ -76,7 +76,7 @@ public class PostController {
      * @return 수정된 게시글 반환
      */
     @PutMapping("/{id}")
-    public ResponseEntity<Message> updatePost(@PathVariable Long id,
+    public ResponseEntity<BaseResponse> updatePost(@PathVariable Long id,
             @RequestBody @Valid PostRequestDto postRequestDto, BindingResult bindingResult,
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
         List<FieldError> fieldErrors = bindingResult.getFieldErrors();
@@ -86,7 +86,7 @@ public class PostController {
 
         PostResponseDto postResponseDto = postService.updatePost(id, postRequestDto,
                 userDetails.getUsername());
-        return ResponseEntity.ok().body(new SuccessMessage("게시물 수정 성공", postResponseDto));
+        return ResponseEntity.ok().body(new SuccessResponse("게시물 수정 성공", postResponseDto));
     }
 
     /**
@@ -96,11 +96,11 @@ public class PostController {
      * @return 성공, 실패 여부 Message 반환
      */
     @DeleteMapping(value = "/{id}", produces = "application/json")
-    public ResponseEntity<Message> deletePost(@PathVariable Long id,
+    public ResponseEntity<BaseResponse> deletePost(@PathVariable Long id,
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
         Long deletedPostId = postService.deletePost(id, userDetails.getUsername());
         return ResponseEntity.ok()
-                .body(new SuccessMessage("게시물 삭제 성공 Post ID: " + deletedPostId));
+                .body(new SuccessResponse("게시물 삭제 성공 Post ID: " + deletedPostId));
     }
 
 }

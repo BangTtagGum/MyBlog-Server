@@ -1,9 +1,10 @@
 package com.sparta.myblogserver.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sparta.myblogserver.controller.message.Message;
+import com.sparta.myblogserver.controller.response.ErrorResponse;
 import com.sparta.myblogserver.security.UserDetailsServiceImpl;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -44,7 +45,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             if (!jwtUtil.validateToken(tokenValue)) {
                 res.setStatus(400);
                 res.setContentType("application/json;charset=UTF-8");
-                Message responseMessage = new Message(HttpStatus.BAD_REQUEST, "유효하지 않은 토큰입니다.");
+                ErrorResponse responseMessage = new ErrorResponse(HttpStatus.BAD_REQUEST, "유효하지 않은 토큰입니다.");
 
                 ObjectMapper objectMapper = new ObjectMapper();
                 PrintWriter out = res.getWriter();
@@ -63,8 +64,9 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                 return;
             }
         }
+        throw new JwtException("유효하지 않은 토큰입니다.");
 
-        filterChain.doFilter(req, res);
+//        filterChain.doFilter(req, res);
     }
 
     // 인증 처리
