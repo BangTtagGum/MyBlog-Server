@@ -1,8 +1,8 @@
 package com.sparta.myblogserver.controller;
 
-import com.sparta.myblogserver.dto.user.SignupRequestDto;
 import com.sparta.myblogserver.dto.response.BaseResponse;
 import com.sparta.myblogserver.dto.response.SuccessResponse;
+import com.sparta.myblogserver.dto.user.SignupRequestDto;
 import com.sparta.myblogserver.error.ParameterValidationException;
 import com.sparta.myblogserver.service.UserService;
 import jakarta.validation.Valid;
@@ -36,5 +36,6 @@ public class UserController {
         userService.signup(requestDto);
         return ResponseEntity.ok().body(new SuccessResponse("회원 가입 완료"));
     }
+
 }
 

@@ -1,10 +1,10 @@
 package com.sparta.myblogserver.controller;
 
 
-import com.sparta.myblogserver.dto.response.BaseResponse;
-import com.sparta.myblogserver.dto.response.SuccessResponse;
 import com.sparta.myblogserver.dto.post.PostRequestDto;
 import com.sparta.myblogserver.dto.post.PostResponseDto;
+import com.sparta.myblogserver.dto.response.BaseResponse;
+import com.sparta.myblogserver.dto.response.SuccessResponse;
 import com.sparta.myblogserver.error.ParameterValidationException;
 import com.sparta.myblogserver.security.UserDetailsImpl;
 import com.sparta.myblogserver.service.PostService;
@@ -55,7 +55,8 @@ public class PostController {
      * @return 저장된 게시글 반환
      */
     @PostMapping
-    public ResponseEntity<BaseResponse> createPost(@RequestBody @Valid PostRequestDto postRequestDto,
+    public ResponseEntity<BaseResponse> createPost(
+            @RequestBody @Valid PostRequestDto postRequestDto,
             BindingResult bindingResult,
             @AuthenticationPrincipal
             UserDetailsImpl userDetails) {

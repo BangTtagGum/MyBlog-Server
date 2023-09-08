@@ -24,12 +24,19 @@ public class Post extends Timestamp {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(nullable = false)
     private String title;
+
     @Column(nullable = false)
     private String content;
+
     @Column(nullable = false)
     private String author;
+
+//    // 연관관계 주입
+//    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<Comment> commentList;
 
     public void update(PostRequestDto postRequestDto) {
         this.title = postRequestDto.getTitle();

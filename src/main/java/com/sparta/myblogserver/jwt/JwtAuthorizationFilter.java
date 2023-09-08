@@ -19,7 +19,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 @Slf4j(topic = "JWT 검증 및 인가")
@@ -32,11 +31,13 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res,
             FilterChain filterChain) throws ServletException, IOException {
-        String tokenValue = jwtUtil.getTokenFromRequestHeader(req);
 
         try {
-            // 이미 인증되어 JWT가 헤더에 들어있을 경우
-            if (StringUtils.hasText(tokenValue)) {
+
+            if (!"GET".equals(req.getMethod())) { // GET 요청이 아니라면 토큰 유무 및 유효성 검증
+
+                // 토큰 체크
+                String tokenValue = jwtUtil.getTokenFromRequestHeader(req);
 
                 // JWT 토큰 "Bearer " 부분 substring
                 tokenValue = jwtUtil.substringToken(tokenValue);
@@ -57,6 +58,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         } catch (RuntimeException e) {
             errorResponse(res, HttpStatus.INTERNAL_SERVER_ERROR, "요청중 에러가 발생하였습니다.");
         }
+
     }
 
     // 인증 처리
