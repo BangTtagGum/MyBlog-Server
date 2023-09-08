@@ -64,9 +64,8 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                 return;
             }
         }
-        throw new JwtException("유효하지 않은 토큰입니다.");
 
-//        filterChain.doFilter(req, res);
+        filterChain.doFilter(req, res);
     }
 
     // 인증 처리
