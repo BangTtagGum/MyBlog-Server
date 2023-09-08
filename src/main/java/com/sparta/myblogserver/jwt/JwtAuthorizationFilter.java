@@ -1,7 +1,7 @@
 package com.sparta.myblogserver.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sparta.myblogserver.controller.response.ErrorResponse;
+import com.sparta.myblogserver.dto.response.ErrorResponse;
 import com.sparta.myblogserver.security.UserDetailsServiceImpl;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;

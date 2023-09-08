@@ -1,8 +1,8 @@
 package com.sparta.myblogserver.controller;
 
 
-import com.sparta.myblogserver.controller.response.BaseResponse;
-import com.sparta.myblogserver.controller.response.SuccessResponse;
+import com.sparta.myblogserver.dto.response.BaseResponse;
+import com.sparta.myblogserver.dto.response.SuccessResponse;
 import com.sparta.myblogserver.dto.post.PostRequestDto;
 import com.sparta.myblogserver.dto.post.PostResponseDto;
 import com.sparta.myblogserver.error.ParameterValidationException;

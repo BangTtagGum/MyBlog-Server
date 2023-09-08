@@ -3,7 +3,7 @@ package com.sparta.myblogserver.jwt;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sparta.myblogserver.dto.user.LoginRequestDto;
 import com.sparta.myblogserver.entity.user.UserRoleEnum;
-import com.sparta.myblogserver.controller.response.BaseResponse;
+import com.sparta.myblogserver.dto.response.BaseResponse;
 import com.sparta.myblogserver.security.UserDetailsImpl;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;

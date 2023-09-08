@@ -1,6 +1,6 @@
 package com.sparta.myblogserver.error.advice;
 
-import com.sparta.myblogserver.controller.response.ErrorResponse;
+import com.sparta.myblogserver.dto.response.ErrorResponse;
 import com.sparta.myblogserver.error.ParameterValidationException;
 import io.jsonwebtoken.JwtException;
 import org.springframework.http.HttpStatus;

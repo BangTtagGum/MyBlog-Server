@@ -1,4 +1,4 @@
-package com.sparta.myblogserver.controller.response;
+package com.sparta.myblogserver.dto.response;
 
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
