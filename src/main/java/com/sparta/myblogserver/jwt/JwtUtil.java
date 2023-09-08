@@ -3,6 +3,7 @@ package com.sparta.myblogserver.jwt;
 import com.sparta.myblogserver.entity.user.UserRoleEnum;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.UnsupportedJwtException;
@@ -127,8 +128,7 @@ public class JwtUtil {
         if (StringUtils.hasText(tokenValue) && tokenValue.startsWith(BEARER_PREFIX)) {
             return tokenValue.substring(7);
         }
-        log.error("토큰을 찾을 수 없습니다.");
-        throw new NullPointerException("토큰을 찾을 수 없습니다.");
+        throw new NullPointerException("토큰이 유효하지 않습니다.");
     }
 
     /**
@@ -137,20 +137,18 @@ public class JwtUtil {
      * @param token substring 한 실제 JWT 토큰 값
      * @return 유효하다면 true, 아니면 false 반환
      */
-    public boolean validateToken(String token) {
+    public void validateToken(String token) {
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
-            return true;
         } catch (SecurityException | MalformedJwtException | SignatureException e) {
-            log.error("Invalid JWT signature, 유효하지 않는 JWT 서명 입니다.");
+            throw new JwtException("Invalid JWT signature, 유효하지 않는 JWT 서명 입니다.");
         } catch (ExpiredJwtException e) {
-            log.error("Expired JWT token, 만료된 JWT token 입니다.");
+            throw new JwtException("Expired JWT token, 만료된 JWT token 입니다.");
         } catch (UnsupportedJwtException e) {
-            log.error("Unsupported JWT token, 지원되지 않는 JWT 토큰 입니다.");
+            throw new JwtException("Unsupported JWT token, 지원되지 않는 JWT 토큰 입니다.");
         } catch (IllegalArgumentException e) {
-            log.error("JWT claims is empty, 잘못된 JWT 토큰 입니다.");
+            throw new JwtException("JWT claims is empty, 잘못된 JWT 토큰 입니다.");
         }
-        return false;
     }
 
     /**

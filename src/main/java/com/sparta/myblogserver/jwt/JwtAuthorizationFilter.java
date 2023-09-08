@@ -32,40 +32,31 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res,
             FilterChain filterChain) throws ServletException, IOException {
-
         String tokenValue = jwtUtil.getTokenFromRequestHeader(req);
 
-        // 이미 인증되어 JWT가 헤더에 들어있을 경우
-        if (StringUtils.hasText(tokenValue)) {
+        try {
+            // 이미 인증되어 JWT가 헤더에 들어있을 경우
+            if (StringUtils.hasText(tokenValue)) {
 
-            // JWT 토큰 "Bearer " 부분 substring
-            tokenValue = jwtUtil.substringToken(tokenValue);
+                // JWT 토큰 "Bearer " 부분 substring
+                tokenValue = jwtUtil.substringToken(tokenValue);
 
-            // 토큰 유효성 검사
-            if (!jwtUtil.validateToken(tokenValue)) {
-                res.setStatus(400);
-                res.setContentType("application/json;charset=UTF-8");
-                ErrorResponse responseMessage = new ErrorResponse(HttpStatus.BAD_REQUEST, "유효하지 않은 토큰입니다.");
+                // 토큰 유효성 검사
+                jwtUtil.validateToken(tokenValue);
 
-                ObjectMapper objectMapper = new ObjectMapper();
-                PrintWriter out = res.getWriter();
-                objectMapper.writeValue(out, responseMessage);
-                return;
-            }
+                // JWT에서 유저 정보 받아오기
+                Claims info = jwtUtil.getUserInfoFromToken(tokenValue);
 
-            // JWT에서 유저 정보 받아오기
-            Claims info = jwtUtil.getUserInfoFromToken(tokenValue);
-
-            try {
                 // SecurityContext 내부에 들어갈 Authentication 설정
                 setAuthentication(info.getSubject());
-            } catch (Exception e) {
-                log.error(e.getMessage());
-                return;
             }
-        }
 
-        filterChain.doFilter(req, res);
+            filterChain.doFilter(req, res);
+        } catch (JwtException e) {
+            errorResponse(res, HttpStatus.BAD_REQUEST, e.getMessage());
+        } catch (RuntimeException e) {
+            errorResponse(res, HttpStatus.INTERNAL_SERVER_ERROR, "요청중 에러가 발생하였습니다.");
+        }
     }
 
     // 인증 처리
@@ -82,5 +73,17 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
         return new UsernamePasswordAuthenticationToken(userDetails, null,
                 userDetails.getAuthorities());
+    }
+
+    private static void errorResponse(HttpServletResponse res, HttpStatus httpStatus,
+            String message) throws IOException {
+        res.setStatus(httpStatus.value());
+        res.setContentType("application/json;charset=UTF-8");
+        ErrorResponse responseMessage = new ErrorResponse(HttpStatus.BAD_REQUEST,
+                message);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        PrintWriter out = res.getWriter();
+        objectMapper.writeValue(out, responseMessage);
     }
 }

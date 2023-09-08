@@ -63,11 +63,11 @@ public class WebSecurityConfig {
                         .permitAll() // resources 접근 허용 설정
                         .requestMatchers("/api/users/**")
                         .permitAll() // '/api/users'로 시작하는 요청 모두 접근 허가
+                        .requestMatchers(HttpMethod.GET, "/api/posts/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/posts/**").authenticated()
                         .requestMatchers(HttpMethod.PUT, "/api/posts/**").authenticated()
                         .requestMatchers(HttpMethod.PATCH, "/api/posts/**").authenticated()
                         .requestMatchers(HttpMethod.DELETE, "/api/posts/**").authenticated()
-                        .requestMatchers(HttpMethod.GET, "/api/posts/**").permitAll()
 //                        .anyRequest().authenticated()
         );
 
