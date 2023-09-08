@@ -60,13 +60,10 @@ public class PostController {
             BindingResult bindingResult,
             @AuthenticationPrincipal
             UserDetailsImpl userDetails) {
-        List<FieldError> fieldErrors = bindingResult.getFieldErrors();
-        for (FieldError e : fieldErrors) {
-            throw new ParameterValidationException(e.getDefaultMessage());
-        }
+        checkParamValidation(bindingResult);
         // 게시글에 작성자 이름 추가
-        postRequestDto.addAuthor(userDetails.getUsername());
-        PostResponseDto postResponseDto = postService.createPost(postRequestDto);
+        PostResponseDto postResponseDto = postService.createPost(postRequestDto,
+                userDetails.getUser());
         return ResponseEntity.ok().body(new SuccessResponse("게시물 생성 성공", postResponseDto));
     }
 
@@ -80,13 +77,10 @@ public class PostController {
     public ResponseEntity<BaseResponse> updatePost(@PathVariable Long id,
             @RequestBody @Valid PostRequestDto postRequestDto, BindingResult bindingResult,
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        List<FieldError> fieldErrors = bindingResult.getFieldErrors();
-        for (FieldError e : fieldErrors) {
-            throw new ParameterValidationException(e.getDefaultMessage());
-        }
+        checkParamValidation(bindingResult);
 
         PostResponseDto postResponseDto = postService.updatePost(id, postRequestDto,
-                userDetails.getUsername());
+                userDetails.getUser());
         return ResponseEntity.ok().body(new SuccessResponse("게시물 수정 성공", postResponseDto));
     }
 
@@ -99,9 +93,21 @@ public class PostController {
     @DeleteMapping(value = "/{id}", produces = "application/json")
     public ResponseEntity<BaseResponse> deletePost(@PathVariable Long id,
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        Long deletedPostId = postService.deletePost(id, userDetails.getUsername());
+        Long deletedPostId = postService.deletePost(id, userDetails.getUser());
         return ResponseEntity.ok()
                 .body(new SuccessResponse("게시물 삭제 성공 Post ID: " + deletedPostId));
+    }
+
+    /**
+     * 파라미터 Validation 메소드 Valid 결과로 나온 Exception을 메세지와 함께 ExHandler에게 전달
+     *
+     * @param bindingResult Parameter Validation중 발생한 Exception 모음
+     */
+    private static void checkParamValidation(BindingResult bindingResult) {
+        List<FieldError> fieldErrors = bindingResult.getFieldErrors();
+        for (FieldError e : fieldErrors) {
+            throw new ParameterValidationException(e.getDefaultMessage());
+        }
     }
 
 }
