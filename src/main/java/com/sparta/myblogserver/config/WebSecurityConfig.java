@@ -11,7 +11,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -63,24 +62,23 @@ public class WebSecurityConfig {
                         .permitAll() // resources 접근 허용 설정
                         .requestMatchers("/api/users/**")
                         .permitAll() // '/api/users'로 시작하는 요청 모두 접근 허가
+                        .requestMatchers(HttpMethod.GET, "/api/posts/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/posts/**").authenticated()
                         .requestMatchers(HttpMethod.PUT, "/api/posts/**").authenticated()
                         .requestMatchers(HttpMethod.PATCH, "/api/posts/**").authenticated()
                         .requestMatchers(HttpMethod.DELETE, "/api/posts/**").authenticated()
-                        .requestMatchers(HttpMethod.GET, "/api/posts/**").permitAll()
-//                        .anyRequest().authenticated()
+                        .anyRequest().authenticated()
         );
 
         // 필터 관리
-        http.addFilterBefore(jwtAuthorizationFilter(), JwtAuthenticationFilter.class);
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(jwtAuthorizationFilter(), JwtAuthenticationFilter.class);
 
         // 접근 불가 페이지
         http.exceptionHandling((exceptionHandling) ->
                 exceptionHandling
                         .accessDeniedPage("/api/posts")
         );
-
 
         return http.build();
     }

@@ -3,8 +3,10 @@ package com.sparta.myblogserver.jwt;
 import com.sparta.myblogserver.entity.user.UserRoleEnum;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
@@ -15,20 +17,16 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
-import java.util.Base64;
 import java.security.Key;
+import java.util.Base64;
 import java.util.Date;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.util.StringUtils;
 
 /**
- * JWT 반환 방법 2가지
- * 1. JWT 를 response 헤더에 바로 담는 방법
- * 2. 쿠키를 생성해서 쿠키안에 JWT를 넣고 response 에 쿠키를 담는 방법
- *
+ * JWT 반환 방법 2가지 1. JWT 를 response 헤더에 바로 담는 방법 2. 쿠키를 생성해서 쿠키안에 JWT를 넣고 response 에 쿠키를 담는 방법
  */
 
 @Slf4j(topic = "JWT 관련 로그")
@@ -127,8 +125,7 @@ public class JwtUtil {
         if (StringUtils.hasText(tokenValue) && tokenValue.startsWith(BEARER_PREFIX)) {
             return tokenValue.substring(7);
         }
-        log.error("Not Found Token");
-        throw new NullPointerException("Not Found Token");
+        throw new JwtException("유효하지 않은 토큰입니다.");
     }
 
     /**
@@ -137,20 +134,18 @@ public class JwtUtil {
      * @param token substring 한 실제 JWT 토큰 값
      * @return 유효하다면 true, 아니면 false 반환
      */
-    public boolean validateToken(String token) {
+    public void validateToken(String token) {
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
-            return true;
         } catch (SecurityException | MalformedJwtException | SignatureException e) {
-            log.error("Invalid JWT signature, 유효하지 않는 JWT 서명 입니다.");
+            throw new JwtException("Invalid JWT signature, 유효하지 않은 JWT 서명 입니다.");
         } catch (ExpiredJwtException e) {
-            log.error("Expired JWT token, 만료된 JWT token 입니다.");
+            throw new JwtException("Expired JWT, 만료된 JWT 입니다.");
         } catch (UnsupportedJwtException e) {
-            log.error("Unsupported JWT token, 지원되지 않는 JWT 토큰 입니다.");
+            throw new JwtException("Unsupported JWT, 지원되지 않는 JWT 입니다.");
         } catch (IllegalArgumentException e) {
-            log.error("JWT claims is empty, 잘못된 JWT 토큰 입니다.");
+            throw new JwtException("JWT claims is empty, 잘못된 JWT 입니다.");
         }
-        return false;
     }
 
     /**
@@ -198,10 +193,10 @@ public class JwtUtil {
             try {
                 return URLDecoder.decode(token, "UTF-8"); // Encode 되어 넘어간 Value 다시 Decode
             } catch (UnsupportedEncodingException e) {
-                return null;
+                throw new JwtException("토큰이 유효하지 않습니다.");
             }
         }
-        return null;
+        throw new JwtException("토큰이 유효하지 않습니다.");
     }
 
 }

@@ -3,10 +3,9 @@ package com.sparta.myblogserver.jwt;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sparta.myblogserver.dto.user.LoginRequestDto;
 import com.sparta.myblogserver.entity.user.UserRoleEnum;
-import com.sparta.myblogserver.controller.message.Message;
+import com.sparta.myblogserver.dto.response.BaseResponse;
 import com.sparta.myblogserver.security.UserDetailsImpl;
 import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -90,10 +89,10 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     private static void setResponse(HttpServletResponse response, HttpStatus status, String message) throws IOException {
         response.setStatus(status.value());
         response.setContentType("application/json;charset=UTF-8");
-        Message responseMessage = new Message(status, message);
+        BaseResponse baseResponse = new BaseResponse(status, message);
 
         ObjectMapper objectMapper = new ObjectMapper();
         PrintWriter out = response.getWriter();
-        objectMapper.writeValue(out, responseMessage);
+        objectMapper.writeValue(out, baseResponse);
     }
 }

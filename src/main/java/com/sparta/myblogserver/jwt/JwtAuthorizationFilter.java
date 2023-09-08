@@ -1,9 +1,10 @@
 package com.sparta.myblogserver.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sparta.myblogserver.controller.message.Message;
+import com.sparta.myblogserver.dto.response.ErrorResponse;
 import com.sparta.myblogserver.security.UserDetailsServiceImpl;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -18,7 +19,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 @Slf4j(topic = "JWT 검증 및 인가")
@@ -32,39 +32,33 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res,
             FilterChain filterChain) throws ServletException, IOException {
 
-        String tokenValue = jwtUtil.getTokenFromRequestHeader(req);
+        try {
 
-        // 이미 인증되어 JWT가 헤더에 들어있을 경우
-        if (StringUtils.hasText(tokenValue)) {
+            if (!"GET".equals(req.getMethod()) && !req.getRequestURI().equals("/api/users/login") && !req.getRequestURI().equals("/api/users/signup")) { // GET 요청이거나 로그인 시도가 아니라면 토큰 유무 및 유효성 검증
 
-            // JWT 토큰 "Bearer " 부분 substring
-            tokenValue = jwtUtil.substringToken(tokenValue);
+                // 토큰 체크
+                String tokenValue = jwtUtil.getTokenFromRequestHeader(req);
 
-            // 토큰 유효성 검사
-            if (!jwtUtil.validateToken(tokenValue)) {
-                res.setStatus(400);
-                res.setContentType("application/json;charset=UTF-8");
-                Message responseMessage = new Message(HttpStatus.BAD_REQUEST, "유효하지 않은 토큰입니다.");
+                // JWT 토큰 "Bearer " 부분 substring
+                tokenValue = jwtUtil.substringToken(tokenValue);
 
-                ObjectMapper objectMapper = new ObjectMapper();
-                PrintWriter out = res.getWriter();
-                objectMapper.writeValue(out, responseMessage);
-                return;
-            }
+                // 토큰 유효성 검사
+                jwtUtil.validateToken(tokenValue);
 
-            // JWT에서 유저 정보 받아오기
-            Claims info = jwtUtil.getUserInfoFromToken(tokenValue);
+                // JWT에서 유저 정보 받아오기
+                Claims info = jwtUtil.getUserInfoFromToken(tokenValue);
 
-            try {
                 // SecurityContext 내부에 들어갈 Authentication 설정
                 setAuthentication(info.getSubject());
-            } catch (Exception e) {
-                log.error(e.getMessage());
-                return;
             }
+
+            filterChain.doFilter(req, res);
+        } catch (JwtException e) {
+            errorResponse(res, HttpStatus.BAD_REQUEST, e.getMessage());
+        } catch (RuntimeException e) {
+            errorResponse(res, HttpStatus.INTERNAL_SERVER_ERROR, "요청중 에러가 발생하였습니다.");
         }
 
-        filterChain.doFilter(req, res);
     }
 
     // 인증 처리
@@ -81,5 +75,17 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
         return new UsernamePasswordAuthenticationToken(userDetails, null,
                 userDetails.getAuthorities());
+    }
+
+    private static void errorResponse(HttpServletResponse res, HttpStatus httpStatus,
+            String message) throws IOException {
+        res.setStatus(httpStatus.value());
+        res.setContentType("application/json;charset=UTF-8");
+        ErrorResponse responseMessage = new ErrorResponse(HttpStatus.BAD_REQUEST,
+                message);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        PrintWriter out = res.getWriter();
+        objectMapper.writeValue(out, responseMessage);
     }
 }
