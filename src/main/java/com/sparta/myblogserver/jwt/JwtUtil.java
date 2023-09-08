@@ -127,8 +127,8 @@ public class JwtUtil {
         if (StringUtils.hasText(tokenValue) && tokenValue.startsWith(BEARER_PREFIX)) {
             return tokenValue.substring(7);
         }
-        log.error("Not Found Token");
-        throw new NullPointerException("Not Found Token");
+        log.error("토큰을 찾을 수 없습니다.");
+        throw new NullPointerException("토큰을 찾을 수 없습니다.");
     }
 
     /**
