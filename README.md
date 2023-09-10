@@ -25,10 +25,10 @@
 
 ### 📝 간단한 UML
 
-<img width="541" alt="#" src="https://github.com/BangTtagGum/MyBlog-Server/assets/99023627/40638127-71c0-423e-8a71-6a15f725ca58">
+<img width="566" alt="스크린샷 2023-09-10 오후 10 48 14" src="https://github.com/BangTtagGum/MyBlog-Server/assets/99023627/a8db8bb1-8abf-4bfd-a06c-83d578d8b80e">
 
 <br>
 
 ### 🔗 간단한 ERD
 
-<img width="600" alt="스크린샷 2023-09-04 오후 2 30 43" src="https://github.com/BangTtagGum/MyBlog-Server/assets/99023627/c8bbc4b6-0b38-48b0-8c32-e0ab73c07be1">
+<img width="738" alt="스크린샷 2023-09-10 오후 10 36 27" src="https://github.com/BangTtagGum/MyBlog-Server/assets/99023627/7f9c75f0-3f39-4a1b-b6da-34dd543382c6">
