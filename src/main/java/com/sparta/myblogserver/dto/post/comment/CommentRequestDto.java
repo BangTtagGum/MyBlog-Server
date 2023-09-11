@@ -23,7 +23,4 @@ public class CommentRequestDto {
         this.username = username;
     }
 
-    public void setContent(String content) {
-        this.content = content;
-    }
 }
