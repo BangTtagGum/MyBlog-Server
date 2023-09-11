@@ -7,6 +7,7 @@ import com.sparta.myblogserver.entity.post.Post;
 import com.sparta.myblogserver.entity.timestamp.Timestamp;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -38,7 +39,7 @@ public class Comment extends Timestamp {
     private String username;
 
     // 다대일 연관관계 주입 (외래키의 주인)
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
     @JoinColumn(name = "post_id")
     private Post post;
