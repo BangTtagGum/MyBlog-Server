@@ -1,4 +1,4 @@
-package com.sparta.myblogserver.entity.post.comment;
+package com.sparta.myblogserver.entity.post;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sparta.myblogserver.dto.post.comment.CommentRequestDto;
