@@ -44,6 +44,15 @@ public class Post extends Timestamp {
     @OneToMany(mappedBy = "post")
     private List<Comment> commentList = new ArrayList<>();
 
+    @OneToMany(mappedBy = "post")
+    private List<Likes> likeList = new ArrayList<>();
+
+    public Post(PostRequestDto requestDto) {
+        this.title = requestDto.getTitle();
+        this.content = requestDto.getContent();
+        this.author = requestDto.getAuthor();
+    }
+
     public void update(PostRequestDto postRequestDto) {
         this.title = postRequestDto.getTitle();
         this.content = postRequestDto.getContent();
