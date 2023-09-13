@@ -74,7 +74,7 @@ public class PostService {
     public String likePostToggle(Long id, User user) {
         Post findPost = findPost(id);
         Optional<Likes> findLikes = likesRepository.findByPostAndUser(findPost, user);
-
+        
         String responseMessage = "";
 
         // 이미 유저가 해당 게시물을 좋아요 했을 경우

@@ -32,8 +32,7 @@ public class PostResponseDto {
         this.content = post.getContent();
         this.author = post.getAuthor();
         this.likesCount = (long) post.getLikeList().size();
-        this.commentList = post.getCommentList()
-                .stream()
+        this.commentList = post.getCommentList().stream()
                 .sorted(Comparator.comparing(Comment::getCreatedAt).reversed())
                 .collect(Collectors.toList());
         this.createdAt = post.getCreatedAt();

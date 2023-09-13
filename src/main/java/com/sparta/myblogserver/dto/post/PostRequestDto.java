@@ -16,15 +16,6 @@ public class PostRequestDto {
     private String content;
     private String author;
 
-    public Post toEntity() {
-        return Post.builder()
-                .title(this.getTitle())
-                .content(this.getContent())
-                .commentList(new ArrayList<>())
-                .author(this.getAuthor())
-                .build();
-    }
-
     public void addAuthor(String author) {
         this.author = author;
     }
