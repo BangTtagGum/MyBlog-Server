@@ -1,6 +1,6 @@
 package com.sparta.myblogserver.dto.post.comment;
 
-import com.sparta.myblogserver.entity.post.comment.Comment;
+import com.sparta.myblogserver.entity.post.Comment;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 

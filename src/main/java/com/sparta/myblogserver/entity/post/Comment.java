@@ -44,14 +44,9 @@ public class Comment extends Timestamp {
     @JoinColumn(name = "post_id")
     private Post post;
 
-    public CommentResponseDto toRes() {
-        return CommentResponseDto.builder()
-                .id(this.getId())
-                .content(this.getContent())
-                .username(this.getUsername())
-                .createdAt(this.getCreatedAt())
-                .modifiedAt(this.getModifiedAt())
-                .build();
+    public Comment(CommentRequestDto requestDto) {
+        this.content = requestDto.getContent();
+        this.username = requestDto.getUsername();
     }
 
     public void setPost(Post post) {

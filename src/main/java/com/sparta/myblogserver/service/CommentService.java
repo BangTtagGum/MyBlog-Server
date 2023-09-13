@@ -5,12 +5,10 @@ import static com.sparta.myblogserver.entity.user.UserRoleEnum.*;
 import com.sparta.myblogserver.dto.post.comment.CommentRequestDto;
 import com.sparta.myblogserver.dto.post.comment.CommentResponseDto;
 import com.sparta.myblogserver.entity.post.Post;
-import com.sparta.myblogserver.entity.post.comment.Comment;
+import com.sparta.myblogserver.entity.post.Comment;
 import com.sparta.myblogserver.entity.user.User;
-import com.sparta.myblogserver.entity.user.UserRoleEnum;
 import com.sparta.myblogserver.repository.CommentRepository;
 import com.sparta.myblogserver.repository.PostRepository;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,13 +31,13 @@ public class CommentService {
 
         // 댓글 생성
         requestDto.addUsername(user.getUsername());
-        Comment comment = requestDto.toEntity();
+        Comment comment = new Comment(requestDto);
         findPost.addComment(comment);
 
         // 댓글 저장
         Comment savedComment = commentRepository.save(comment);
 
-        return savedComment.toRes();
+        return new CommentResponseDto(savedComment);
     }
 
     @Transactional
@@ -49,7 +47,7 @@ public class CommentService {
         // 유저의 권한이 ADMIN 이거나 댓글 작성한 user와 수정하려는 user가 같은 경우
         if (user.getRole().equals(ADMIN) || user.getUsername().equals(findComment.getUsername())) {
             findComment.update(requestDto);
-            return findComment.toRes();
+            return new CommentResponseDto(findComment);
         }
         throw new IllegalArgumentException("작성자만 수정이 가능합니다.");
     }
