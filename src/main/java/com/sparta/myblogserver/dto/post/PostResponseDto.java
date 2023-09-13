@@ -1,7 +1,7 @@
 package com.sparta.myblogserver.dto.post;
 
 import com.sparta.myblogserver.entity.post.Post;
-import com.sparta.myblogserver.entity.post.comment.Comment;
+import com.sparta.myblogserver.entity.post.Comment;
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
@@ -21,6 +21,7 @@ public class PostResponseDto {
     private String title;
     private String content;
     private String author;
+    private Long likesCount;
     private List<Comment> commentList;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
@@ -30,8 +31,8 @@ public class PostResponseDto {
         this.title = post.getTitle();
         this.content = post.getContent();
         this.author = post.getAuthor();
-        this.commentList = post.getCommentList()
-                .stream() // 지연로딩 하기 때문에 Service의 조회 메소드에 @Transactional 적용 필요 아니면 오류 발생
+        this.likesCount = (long) post.getLikeList().size();
+        this.commentList = post.getCommentList().stream()
                 .sorted(Comparator.comparing(Comment::getCreatedAt).reversed())
                 .collect(Collectors.toList());
         this.createdAt = post.getCreatedAt();
