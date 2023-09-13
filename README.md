@@ -31,7 +31,7 @@
 
 ### 🔗 간단한 ERD
 
-<img width="764" alt="스크린샷 2023-09-11 오전 9 17 58" src="https://github.com/BangTtagGum/MyBlog-Server/assets/99023627/c3ab553a-4c71-41e9-b838-98d224a9531c">
+<img width="809" alt="스크린샷 2023-09-13 오후 4 06 12" src="https://github.com/BangTtagGum/MyBlog-Server/assets/99023627/72cbe3a1-29d9-4627-bb76-35394f6983ff">
 
 ### API 명세서
 [API 명세서](https://www.notion.so/API-735e3e483db84586a4aed610741ca750)
